@@ -6,7 +6,7 @@ const config = { // 白名单和配置
     "isClockIn": true, // 是否开启签到
     "chatType": 'at', // 空表示关闭，at表示at模式，name表示名字
     "isVideoAnalysis": true, // 是否开启视频解析
-    "autoReplyProbability": 8, // 自动回复消息的概率，最高100%
+    "autoReplyProbability": 3, // 自动回复消息的概率，最高100%
     // "isEmoji": true, // 是否开启表情包
     // "sensitiveWords": sitiveWord // 敏感词
   },
