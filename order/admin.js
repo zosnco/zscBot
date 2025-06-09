@@ -46,7 +46,7 @@ export async function handleAdminCommands(data, msg) {
         }, data)
       } else {
         const res = await tangdouzBiaoq({
-          nr: `龙图${msg1}`
+          nr: msg1 || '没啥好说的'
         })
         messageTypeChange({
           type: "image",
