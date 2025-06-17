@@ -1,7 +1,9 @@
 import schedule from 'node-schedule';
-import { send_group_sign } from '../api/qqBot.js';
+import { send_group_sign, set_group_card } from '../api/qqBot.js';
 import config from '../config/index.js';
-
+import { dayjs } from '../utils/index.js'
+import dotenv from 'dotenv'
+dotenv.config()
 // 存储所有的定时任务
 const scheduledJobs = new Map();
 
@@ -42,7 +44,19 @@ function dailyGroupSignIn() {
     }
   });
 }
-
+// 修改群昵称
+function set_group_cardChange() {
+  Object.keys(config).forEach(groupId => {
+    if (config[groupId].isCardName) {
+      const times = dayjs().format('MM月DD日 HH:mm')
+      set_group_card({
+        group_id: groupId,
+        user_id: process.env.ADMIN_QQ,
+        card: config[groupId].isCardName.replace(/\(.*?\)/g, `(${times})`)
+      })
+    }
+  });
+}
 // 初始化定时任务
 export function initializeScheduledTasks() {
   // 每天00:00执行群打卡
@@ -51,10 +65,15 @@ export function initializeScheduledTasks() {
     '0 0 0 * * *',
     dailyGroupSignIn
   );
+  // 修改群昵称
+  createScheduleJob(
+    'set_group_cardChange',
+    '* * * * *',
+    set_group_cardChange
+  );
 }
 
 // 导出任务管理函数
 export {
-  createScheduleJob,
   cancelScheduleJob
 };

@@ -20,3 +20,9 @@ export async function delete_msg(data) {
   const res = await sendApiRequest(`http://117.72.118.144:3010/delete_msg`, 'POST', qs.stringify(data))
   return res
 }
+
+// 修改群名片
+export async function set_group_card(data) {
+  const res = await sendApiRequest(`http://117.72.118.144:3010/set_group_card`, 'POST', qs.stringify(data))
+  return res
+}

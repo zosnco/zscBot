@@ -1,5 +1,4 @@
 import { exec } from 'child_process'
-import dotenv from 'dotenv'
 import { messageTypeChange } from './index.js'
 import { delete_msg } from '../api/qqBot.js'
 import { newCrawl } from '../api/saicheData.js'
@@ -7,6 +6,7 @@ import config from '../config/index.js'
 import { gjlpChat } from '../api/chat.js'
 import { tangdouzBiaoq } from '../api/emojiImg.js'
 import { generateRandomString } from '../utils/index.js'
+import dotenv from 'dotenv'
 dotenv.config()
 let sessionId = generateRandomString()
 export async function handleAdminCommands(data, msg) {

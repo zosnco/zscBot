@@ -184,3 +184,41 @@ export async function generateTextImage(text) {
     return null;
   }
 }
+
+export function dayjs(date = new Date()) {
+  const d = new Date(date);
+
+  return {
+    format(formatStr = 'YYYY-MM-DD HH:mm:ss') {
+      const replacements = {
+        YYYY: d.getFullYear(),
+        MM: String(d.getMonth() + 1).padStart(2, '0'),
+        DD: String(d.getDate()).padStart(2, '0'),
+        HH: String(d.getHours()).padStart(2, '0'),
+        mm: String(d.getMinutes()).padStart(2, '0'),
+        ss: String(d.getSeconds()).padStart(2, '0'),
+      };
+
+      return Object.entries(replacements).reduce(
+        (str, [key, value]) => str.replace(key, value),
+        formatStr
+      );
+    },
+    
+    add(amount, unit) {
+      const newDate = new Date(d);
+      switch (unit) {
+        case 'day':
+        case 'days':
+          newDate.setDate(newDate.getDate() + amount);
+          break;
+        case 'hour':
+        case 'hours':
+          newDate.setHours(newDate.getHours() + amount);
+          break;
+        // 可以继续扩展其他单位
+      }
+      return dayjs(newDate);
+    }
+  };
+}
