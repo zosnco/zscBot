@@ -42,7 +42,7 @@ export async function handleAdminCommands(data, msg) {
         })
         messageTypeChange({
           type: "text",
-          data: { text: '[自动回复]\n' + res.response }
+          data: { text: '[自动回复] ' + res.response }
         }, data)
       } else {
         const res = await tangdouzBiaoq({
@@ -50,7 +50,7 @@ export async function handleAdminCommands(data, msg) {
         })
         messageTypeChange({
           type: "image",
-          data: { file: res, "sub_type": "1", "summary": "在吗？", }
+          data: { file: res, "sub_type": "1", "summary": "怎么都不说话？", }
         }, data)
       }
       return true
