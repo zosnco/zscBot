@@ -42,7 +42,7 @@ export async function handleAdminCommands(data, msg) {
         })
         messageTypeChange({
           type: "text",
-          data: { text: '[自动回复] ' + res.response }
+          data: { text: res.response }
         }, data)
       } else {
         const res = await tangdouzBiaoq({
