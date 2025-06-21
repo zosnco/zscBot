@@ -12,7 +12,7 @@ export async function _sp_jx_Analysis(data, msg) {
         const res = await sp_jx_Analysis({
           url: urls[0], // 使用第一个找到的链接
         });
-        const url = res?.video
+        const url = res?.data?.url
        if(!url) return
         messageTypeChange({
           type: "video",
