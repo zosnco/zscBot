@@ -51,7 +51,11 @@ ws.on('close', function close() {
 // 创建一个函数来处理WebSocket连接
 function connectWebSocket() {
   console.log('正在连接到WebSocket服务器...');
-  const newWs = new WebSocket(wsUrl);
+  const newWs = new WebSocket(wsUrl, {
+    headers: {
+      'Authorization': 'Bearer zosnco51857'
+    }
+  });
 
   // 重新绑定所有事件处理器
   newWs.on('open', function open() {
