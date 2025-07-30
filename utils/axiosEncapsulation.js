@@ -10,7 +10,7 @@ export async function sendApiRequest(url, method = 'GET', data = null, headers =
   try {
     // 添加默认的Authorization Bearer token
     const defaultHeaders = {
-      'Authorization': 'Bearer 7mwyeegozqk',
+      'Authorization': 'Bearer zosnco51857',
       ...headers
     };
 
