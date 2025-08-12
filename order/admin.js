@@ -50,7 +50,7 @@ export async function handleAdminCommands(data, msg) {
         })
         messageTypeChange({
           type: "image",
-          data: { file: res, "sub_type": "1", "summary": "这么大的红包？", }
+          data: { file: res, "sub_type": "1", "summary": "怎么开始爆照了？", }
         }, data)
       }
       return true
