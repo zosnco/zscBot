@@ -31,9 +31,9 @@ async function textChange(data, msg) {
       msg: parseSongRequest(msg1, '点歌')[0] || '',
       n: parseSongRequest(msg1, '点歌')[1] || 1,
     })
-    if (res.music) messageTypeChange({
+    if (res.music_url) messageTypeChange({
       type: "record",
-      data: { file: res.music }
+      data: { file: res.music_url }
     }, data)
   }
   if (msg1?.includes('图鉴')) {
