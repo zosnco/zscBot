@@ -35,7 +35,7 @@ export async function handleAdminCommands(data, msg) {
     if (randomNum < probability) {
       // 生成0-100的随机数，如果小于设定的概率值则触发自动回复
       const randomNum2 = Math.floor(Math.random() * 100)
-      if (randomNum2 < 30 && msg1) {
+      if (randomNum2 <= 0 && msg1) {
         const res = await gjlpChat({
           sessionId: sessionId,
           message: msg1,
