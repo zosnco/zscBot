@@ -48,7 +48,7 @@ export function formatMessage(options) {
 export function parseSongRequest(param1, param2) {
   // 检查是否所有参数都已提供
   if (!param1 || !param2) {
-    // throw new Error("两个参数都是必填项");
+    throw new Error("两个参数都是必填项");
   }
 
   // 移除 param1 中的所有空格
@@ -57,17 +57,18 @@ export function parseSongRequest(param1, param2) {
   // 从清理后的第一个参数中移除第二个参数的内容（如果存在）
   const resultParam1 = cleanedParam1.replace(param2, "").trim();
 
-  // 使用正则表达式提取歌手名和数字部分，允许所有语言字符和标点符号的存在
-  const match = resultParam1.match(/^([\p{L}\p{M}\p{P}]+)(\d+)?$/u);
+  // 使用更宽松的正则表达式来匹配歌名和数字部分
+  // 允许任何Unicode字符（包括日文、特殊符号等）
+  const match = resultParam1.match(/^([^\d]+?)(\d+)?$/u);
   if (!match) {
     return []; // 如果格式不正确，返回空数组
   }
 
-  const singer = match[1]; // 歌手名，包含可能的标点符号
+  const songName = match[1].trim(); // 歌名部分，移除可能的首尾空格
   const number = match[2]; // 数字部分（如果有）
 
   // 始终返回数组，即使只有一个值也放在数组中
-  return number ? [singer, parseInt(number)] : [singer];
+  return number ? [songName, parseInt(number)] : [songName];
 }
 
 /**
