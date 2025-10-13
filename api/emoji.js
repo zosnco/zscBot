@@ -1,56 +1,86 @@
 import qs from 'qs';
-import { sendApiRequest } from '../utils/axiosEncapsulation.js';
 import { removeEmptyValues } from '../utils/index.js';
 // type和对应中文的映射关系
 let typeMap = {
-  '二次元入口': {
+  '洛天依': {
     type: 1,
+    isPlainText: true // 是否纯文字
   },
-  '给社会添乱': {
+  '戒导': {
     type: 2,
   },
-  '毒瘾发作': {
+  '逆转裁判气泡': {
     type: 3,
+    isPlainText: true
   },
-  '一样': {
+  '二次元入口': {
     type: 4,
   },
-  '我永远喜欢': {
+  '添乱': {
     type: 5,
   },
-  '防诱拐': {
+  '上瘾': {
     type: 6,
   },
-  '阿尼亚喜欢': {
+  '"一样': {
     type: 7,
   },
-  '鼓掌': {
+  '一直': {
     type: 8,
   },
-  '升天': {
+  '我永远喜欢': {
     type: 9,
-    isPlainText: true // 是否纯文字
   },
-  '悲报': {
+  '防诱拐': {
+    type: 10,
+  },
+  '阿尼亚喜欢': {
+    type: 11,
+  },
+  '鼓掌': {
     type: 12,
-    isPlainText: true // 是否纯文字
   },
-  '拍头': {
+  '阿罗娜扔': {
     type: 13,
   },
-  '啃': {
+  '升天': {
     type: 14,
+    isPlainText: true
   },
-  '高血压': {
+  '问问': {
     type: 15,
   },
-  '波奇手稿': {
-    type: 144,
-    isPlainText: true // 是否纯文字
+  '亚托莉枕头': {
+    type: 16,
+    isPlainText: true
   },
-  '撅': {
-    type: 117,
-    isQQparam: true// 表示参数是需要二个QQ号
+  '宁宁举牌': {
+    type: 17,
+    // isQQparam: true// 表示参数是需要二个QQ号
+  },
+  'ba说': {
+    type: 18,
+  },
+  '继续干活': {
+    type: 19,
+  },
+  '后空翻': {
+    type: 20,
+  },
+  '悲报': {
+    type: 21,
+    isPlainText: true
+  },
+  '蔚蓝档案标题': {
+    type: 22,
+    isPlainText: true
+  },
+  '拍头': {
+    type: 23,
+  },
+  '揍': {
+    type: 24,
+    isQQparam: true
   },
 };
 
@@ -68,8 +98,8 @@ export async function generateEmoji(data, msg) {
   const text = msg[0]?.data.text?.split(' ')[0]?.trim()
   // 查找at消息
   const atMessages = msg.filter(m => m.type === 'at');
-  // 查找text消息
-  const textMessages = msg.filter(m => m.type === 'text');
+  // 查找text消息，并排除只包含空格的消息
+  const textMessages = msg.filter(m => m.type === 'text' && m.data.text.trim() !== '');
   if (!typeMap[text] || (atMessages.length == 0 && textMessages.length == 0)) return
   let emojiData = {}
   if (atMessages.length > 0 && !typeMap[text].isPlainText) { // 如果有at消息
@@ -98,14 +128,6 @@ export async function generateEmoji(data, msg) {
     return ''
   }
   if (!emojiData.type) return ''
-  const res = await sendApiRequest(
-    `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emojiData)}`,
-    'GET',
-    null,
-    {},
-    true
-  );
-  // 将二进制数据转换为base64
-  const base64Data = `base64://${res.toString('base64')}`
-  return base64Data
+  const res = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emojiData)}`
+  return res
 }
