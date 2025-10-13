@@ -56,10 +56,11 @@ let typeMap = {
   },
   '宁宁举牌': {
     type: 17,
-    // isQQparam: true// 表示参数是需要二个QQ号
+    isPlainText: true
   },
   'ba说': {
     type: 18,
+    isPlainText: true
   },
   '继续干活': {
     type: 19,
@@ -81,6 +82,164 @@ let typeMap = {
   '揍': {
     type: 24,
     isQQparam: true
+  },
+  '砍头': {
+    type: 25,
+  },
+  '啃': {
+    type: 26,
+  },
+  '高血压': {
+    type: 28,
+  },
+  '波奇手稿': {
+    type: 29,
+  },
+  '布洛妮娅举牌': {
+    type: 30,
+    isPlainText: true
+  },
+  '奶茶': {
+    type: 31,
+  },
+  '遇到困难请拨打': {
+    type: 32,
+    isQQparam: true
+  },
+  '看看你的': {
+    type: 33,
+    isQQparam: true
+  },
+  '咖波画': {
+    type: 34
+  },
+  '咖波指': {
+    type: 35
+  },
+  '咖波撕': {
+    type: 36
+  },
+  '咖波蹭': {
+    type: 37
+  },
+  '咖波炖': {
+    type: 39
+  },
+  '咖波撞': {
+    type: 40
+  },
+  '这个引起的': {
+    type: 42
+  },
+  '字符画': {
+    type: 45
+  },
+  '追列车': {
+    type: 46
+  },
+  '国旗': {
+    type: 47
+  },
+  '智乃扔': {
+    type: 48
+  },
+  '鼠鼠搓': {
+    type: 49
+  },
+  '小丑': {
+    type: 50
+  },
+  '小丑面具': {
+    type: 51
+  },
+  '迷惑': {
+    type: 52
+  },
+  '兑换券': {
+    type: 53
+  },
+  '捂脸': {
+    type: 54
+  },
+  '爬': {
+    type: 55
+  },
+  '群青': {
+    type: 56
+  },
+  '白天黑夜': {
+    type: 57,
+    isQQparam: true
+  },
+  '像样的亲亲': {
+    type: 58
+  },
+  '恐龙': {
+    type: 60
+  },
+  '注意力涣散': {
+    type: 61
+  },
+  '离婚协议': {
+    type: 62
+  },
+  '撅': {
+    type: 63,
+    isQQparam: true
+  },
+  '狗都不玩': {
+    type: 64,
+  },
+  '管人痴': {
+    type: 65
+  },
+  '不要靠近': {
+    type: 66
+  },
+  '不要按': {
+    type: 67,
+    isPlainText: true
+  },
+  '别碰': {
+    type: 68
+  },
+  '哆啦A梦说': {
+    type: 69,
+    isPlainText: true
+  },
+  '吃': {
+    type: 71
+  },
+  '换位思考': {
+    type: 72
+  },
+  '意若思镜': {
+    type: 74
+  },
+  '灰飞烟灭': {
+    type: 75
+  },
+  '我爸爸': {
+    type: 77
+  },
+  '击剑': {
+    type: 78,
+    isQQparam: true
+  },
+  '我打宿傩': {
+    type: 79
+  },
+  '满脑子': {
+    type: 80
+  },
+  '闪瞎': {
+    type: 83
+  },
+  '飞机杯': {
+    type: 84
+  },
+  '弹': {
+    type: 85
   },
 };
 
@@ -129,5 +288,6 @@ export async function generateEmoji(data, msg) {
   }
   if (!emojiData.type) return ''
   const res = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emojiData)}`
+  console.log(res, 123);
   return res
 }
