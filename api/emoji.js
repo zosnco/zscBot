@@ -288,6 +288,5 @@ export async function generateEmoji(data, msg) {
   }
   if (!emojiData.type) return ''
   const res = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emojiData)}`
-  console.log(res, 123);
   return res
 }
