@@ -81,7 +81,8 @@ export async function generateEmoji(data, msg) {
       // 如果有第二个at消息，使用第二个at的qq
       qq2: (atMessages[1] || atMessages[0])?.data.qq,
       msg: textArr[0] || text,
-      msg2: textArr[1] || text
+      msg2: textArr[1] || text,
+      action: 'create_meme'
     }
   } else if (typeMap[text].isPlainText) { // 如果没有at消息
     const textArr = removeEmptyValues(textMessages[0]?.data.text?.split(' ')) || []
@@ -90,7 +91,8 @@ export async function generateEmoji(data, msg) {
       qq: data.sender.user_id,
       qq2: data.sender.user_id,
       msg: textArr[1] || textArr[0],
-      msg2: textArr[2] || textArr[0]
+      msg2: textArr[2] || textArr[0],
+      action: 'create_meme'
     }
   } else {
     return ''
