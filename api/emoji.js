@@ -41,7 +41,7 @@ export async function generateEmoji(data, msg) {
         if (atMessages[ids]?.data.qq) emoData[`qq${ids == 0 ? '' : (Number(ids + 1))}`] = atMessages[ids].data.qq
         ids++
       } else if (item.includes('msg')) {
-        const arr = textMessages[0]?.data.text.split(' ')
+        const arr = textMessages[0]?.data.text.split(' ')||[]
         if (atMessages.length == 0) arr.splice(0, 1)
         if (arr.length < 0) return
         removeEmptyValues(arr).forEach((item, index) => {
