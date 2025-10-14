@@ -132,47 +132,56 @@ export function extractUrls(text) {
 export async function generateTextImage(text) {
   try {
     // 计算文本换行
-    const maxCharsPerLine = 30; // 每行最大字符数
-    const lineHeight = 30; // 行高
+    const maxCharsPerLine = 40; // 增加每行最大字符数
+    const lineHeight = 35; // 增加行高
     const lines = [];
-    let currentLine = '';
-
-    // 分割文本为单词或字符
-    const words = text.split('');
-
-    for (const char of words) {
-      if (currentLine.length >= maxCharsPerLine && char !== '\n') {
-        lines.push(currentLine);
-        currentLine = '';
-      }
-      if (char === '\n') {
-        lines.push(currentLine);
-        currentLine = '';
+    
+    // 按换行符分割文本
+    const paragraphs = text.split('\n');
+    
+    for (const paragraph of paragraphs) {
+      if (paragraph.trim() === '') {
+        lines.push(''); // 保留空行
         continue;
       }
-      currentLine += char;
-    }
-    if (currentLine) {
-      lines.push(currentLine);
+      
+      let currentLine = '';
+      const chars = paragraph.split('');
+      
+      for (const char of chars) {
+        if (currentLine.length >= maxCharsPerLine) {
+          lines.push(currentLine);
+          currentLine = char;
+        } else {
+          currentLine += char;
+        }
+      }
+      
+      if (currentLine) {
+        lines.push(currentLine);
+      }
     }
 
-    // 计算所需的SVG高度
-    const totalHeight = Math.max(400, (lines.length + 1) * lineHeight + 40);
+    // 计算所需的SVG高度和宽度
+    const padding = 40;
+    const totalHeight = Math.max(400, lines.length * lineHeight + padding * 2);
+    const totalWidth = 900;
 
-    // 创建SVG内容
-    const svgContent = `
-      <svg width="800" height="${totalHeight}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="white"/>
-        ${lines.map((line, index) => `
-          <text
-            x="20"
-            y="${40 + index * lineHeight}"
-            font-size="24"
-            fill="black"
-          >${line}</text>
-        `).join('')}
-      </svg>
-    `;
+    // 创建SVG内容，转义特殊字符
+    const svgContent = `<svg width="${totalWidth}" height="${totalHeight}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#f8f9fa"/>
+  <rect x="20" y="20" width="${totalWidth - 40}" height="${totalHeight - 40}" rx="10" fill="white" stroke="#e9ecef" stroke-width="2"/>
+  ${lines.map((line, index) => {
+    const escapedLine = line
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+    
+    return `<text x="40" y="${60 + index * lineHeight}" font-family="Arial, sans-serif" font-size="20" fill="#333333">${escapedLine}</text>`;
+  }).join('')}
+</svg>`;
 
     // 使用sharp将SVG转换为图片
     const image = await sharp(Buffer.from(svgContent))
@@ -182,6 +191,7 @@ export async function generateTextImage(text) {
     return image.toString('base64');
   } catch (error) {
     console.error('生成图片失败:', error);
+    console.error('错误详情:', error.message);
     return null;
   }
 }

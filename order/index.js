@@ -50,6 +50,46 @@ async function textChange(data, msg) {
       data: { file: res.img }
     }], data)
   }
+  // 处理表情包菜单指令
+  if (msg1?.includes('表情包菜单')) {
+    try {
+      const emojiData = await allEmoChange()
+      if (emojiData && emojiData.length > 0) {
+        let menuText = '表情包指令菜单\n\n'
+        menuText += '使用方法：直接发送表情包名称即可生成\n'
+        menuText += '例如：捶 @某人 或 捶 @某人 文字内容 或 5000兆 文字内容1 文字内容2\n\n'
+        menuText += '可用表情包列表：\n'
+        
+        emojiData.forEach((item, index) => {
+          if (item.data && item.data.name) {
+            menuText += `${index + 1}. ${item.data.name}`
+            if (item.data.params && item.data.params.length > 0) {
+              menuText += ` (需要: ${item.data.params.join(', ')})`
+            }
+            menuText += '\n'
+          }
+        })
+        
+        menuText += '\n温馨提示：\n'
+        menuText += '• @某人：选择目标用户\n'
+        menuText += '• 文字内容：添加自定义文字\n'
+        menuText += '• 部分表情包支持多个参数，请按需使用\n'
+        const menuImage = await generateTextImage(menuText);
+        if (menuImage) {
+          messageTypeChange({
+            type: "image",
+            data: { file: `base64://${menuImage}` }
+          }, data)
+        } else {
+          // 如果图片生成失败，发送文本消息
+          messageTypeChange({
+            type: "text",
+            data: { text: menuText }
+          }, data)
+        }
+      }
+    } catch (error) { }
+  }
   // 处理表情包指令
   if (config[data.group_id]?.isEmoji) {
     const res = await generateEmoji(data, msg)
