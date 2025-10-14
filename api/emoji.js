@@ -39,13 +39,15 @@ export async function generateEmoji(data, msg) {
         const arr = textMessages[0]?.data.text.split(' ')
         if (atMessages.length == 0) arr.splice(0, 1)
         if (arr.length < 0) return
-        arr.filter(item => item != '').forEach((item, index) => {
+        removeEmptyValues(arr).forEach((item, index) => {
           emoData[`msg${index == 0 ? '' : (Number(index + 1))}`] = item
         })
       }
     }
   }
   if (!obj || (!(Object.keys(emoData).length == obj.params.length))) return
+  emoData.action = 'create_meme'
+  emoData.type = obj.type
   const url = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emoData)}`
   return url
 }
