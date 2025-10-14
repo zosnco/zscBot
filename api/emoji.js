@@ -1,7 +1,7 @@
 import qs from 'qs';
+import { sendApiRequest } from '../utils/axiosEncapsulation.js';
 import { removeEmptyValues } from '../utils/index.js';
-import emoType from '../config/emoType.js';
-
+let emoType = null
 /**
  * 生成表情包
  * @param {Object} data - 请求参数
@@ -13,39 +13,39 @@ import emoType from '../config/emoType.js';
  * @returns {Promise<Object>} 接口返回数据
  */
 export async function generateEmoji(data, msg) {
+  if (!emoType) {
+    const res = await sendApiRequest(
+      `https://api.lolimi.cn/API/preview/api.php?action=meme_info&qq=1493312415&qq2=1493312415`,
+      'GET',
+    );
+    emoType = res
+  }
   const text = msg[0]?.data.text?.split(' ')[0]?.trim()
   // 查找at消息
   const atMessages = msg.filter(m => m.type === 'at');
   // 查找text消息，并排除只包含空格的消息
-  const textMessages = msg.filter(m => m.type === 'text' && m.data.text.trim() !== '');
-  if (!emoType[text] || (atMessages.length == 0 && textMessages.length == 0)) return
-  let emojiData = {}
-  if (atMessages.length > 0 && !emoType[text].isPlainText) { // 如果有at消息
-    const textArr = removeEmptyValues(textMessages[1]?.data.text?.split(' ')) || []
-    emojiData = {
-      type: emoType[text].type,
-      // 如果是需要发送者id且没有at消息，使用原始qq，否则使用第一个at的qq
-      qq: atMessages.length == 1 && emoType[text].isQQparam ? data.sender.user_id : atMessages[0]?.data.qq,
-      // 如果有第二个at消息，使用第二个at的qq
-      qq2: (atMessages[1] || atMessages[0])?.data.qq,
-      msg: textArr[0] || text,
-      msg2: textArr[1] || text,
-      action: 'create_meme'
+  const textMessages = msg.filter(m => m.type === 'text' && m.data.text.trim() !== '' && m.data.text.trim() != text);
+  if (!emoType) return
+  const obj = emoType.find(item => item.data.name == text)?.data
+  let emoData = {}
+  if (obj) {
+    let ids = 0
+    for (let i = 0; i < obj.params.length; i++) {
+      const item = obj.params[i];
+      if (item.includes('qq')) {
+        if (atMessages[ids]?.data.qq) emoData[`qq${ids == 0 ? '' : (Number(ids + 1))}`] = atMessages[ids].data.qq
+        ids++
+      } else if (item.includes('msg')) {
+        const arr = textMessages[0]?.data.text.split(' ')
+        if (atMessages.length == 0) arr.splice(0, 1)
+        if (arr.length < 0) return
+        arr.filter(item => item != '').forEach((item, index) => {
+          emoData[`msg${index == 0 ? '' : (Number(index + 1))}`] = item
+        })
+      }
     }
-  } else if (emoType[text].isPlainText) { // 如果没有at消息
-    const textArr = removeEmptyValues(textMessages[0]?.data.text?.split(' ')) || []
-    emojiData = {
-      type: emoType[text].type,
-      qq: data.sender.user_id,
-      qq2: data.sender.user_id,
-      msg: textArr[1] || textArr[0],
-      msg2: textArr[2] || textArr[0],
-      action: 'create_meme'
-    }
-  } else {
-    return ''
   }
-  if (!emojiData.type) return ''
-  const res = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emojiData)}`
-  return res
+  if (!obj || (!(Object.keys(emoData).length == obj.params.length))) return
+  const url = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emoData)}`
+  return url
 }
