@@ -43,6 +43,10 @@ export async function generateEmoji(data, msg) {
           emoData[`msg${index == 0 ? '' : (Number(index + 1))}`] = item
         })
       }
+      if (item.includes('qq2') && atMessages.length == 1) { // 特殊
+        emoData[`qq`] = data.sender.user_id
+        emoData[`qq2}`] = atMessages[0].data.qq
+      }
     }
   }
   if (!obj || (!(Object.keys(emoData).length == obj.params.length))) return
