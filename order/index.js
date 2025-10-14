@@ -6,7 +6,7 @@ import { parseSongRequest, formatMessage, generateTextImage } from '../utils/ind
 import { handleAdminCommands } from './admin.js'
 import { dsChatChange } from './chatChange.js'
 import { _sp_jx_Analysis } from './videoAnalysis.js'
-import { generateEmoji } from '../api/emoji.js'
+import { allEmoChange, generateEmoji } from '../api/emoji.js'
 import config from '../config/index.js'
 import dotenv from 'dotenv'
 

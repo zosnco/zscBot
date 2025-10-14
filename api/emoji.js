@@ -2,6 +2,14 @@ import qs from 'qs';
 import { sendApiRequest } from '../utils/axiosEncapsulation.js';
 import { removeEmptyValues } from '../utils/index.js';
 let emoType = null
+// 获取表情包所有数据
+export async function allEmoChange() {
+  const res = await sendApiRequest(
+    `https://api.lolimi.cn/API/preview/api.php?action=meme_info&qq=1493312415&qq2=1493312415`,
+    'GET',
+  );
+  return res
+}
 /**
  * 生成表情包
  * @param {Object} data - 请求参数
@@ -14,10 +22,7 @@ let emoType = null
  */
 export async function generateEmoji(data, msg) {
   if (!emoType) {
-    const res = await sendApiRequest(
-      `https://api.lolimi.cn/API/preview/api.php?action=meme_info&qq=1493312415&qq2=1493312415`,
-      'GET',
-    );
+    const res = await allEmoChange()
     emoType = res
   }
   const text = msg[0]?.data.text?.split(' ')[0]?.trim()
