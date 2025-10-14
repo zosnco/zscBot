@@ -179,7 +179,7 @@ export async function generateTextImage(text) {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
     
-    return `<text x="40" y="${60 + index * lineHeight}" font-family="Arial, sans-serif" font-size="20" fill="#333333">${escapedLine}</text>`;
+    return `<text x="40" y="${60 + index * lineHeight}" font-family="Microsoft YaHei, 微软雅黑, sans-serif" font-size="20" fill="#333333">${escapedLine}</text>`;
   }).join('')}
 </svg>`;
 
