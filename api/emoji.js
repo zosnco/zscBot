@@ -45,7 +45,7 @@ export async function generateEmoji(data, msg) {
       }
       if (item.includes('qq2') && atMessages.length == 1) { // 特殊
         emoData[`qq`] = data.sender.user_id
-        emoData[`qq2}`] = atMessages[0].data.qq
+        emoData[`qq2`] = atMessages[0].data.qq
       }
     }
   }
