@@ -2,7 +2,7 @@
 const config = { // 白名单和配置
   "838881064": {
     "welcomeMessages": " 欢迎加入凌云 群名片改成游戏名字 记得留意下群公告内容谢谢", // 群欢迎语
-    "isAntiRetraction": true, // 是否开启防撤回
+    "isAntiRetraction": false, // 是否开启防撤回
     "isClockIn": true, // 是否开启签到
     "chatType": '', // 空表示关闭，at表示at模式，name表示名字
     "isVideoAnalysis": true, // 是否开启视频解析
@@ -18,7 +18,7 @@ const config = { // 白名单和配置
   "862794206": {},
   "1021173838": {
     "welcomeMessages": " 欢迎入群，嘻嘻",
-    "isAntiRetraction": true,
+    "isAntiRetraction": false,
     "isClockIn": true,
     "isEmoji": true,
     "chatType": '', // 空表示关闭，at表示at模式，name表示名字
