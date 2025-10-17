@@ -13,8 +13,6 @@ export async function send_private_msg(data) {
 // 合并消息转发
 export async function send_forward_msg(data) {
   const res = await sendApiRequest(`http://117.72.118.144:3010/send_forward_msg`, 'POST', qs.stringify(data))
-  console.log(res);
-  
   return res
 }
 // 群签到
