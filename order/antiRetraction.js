@@ -1,4 +1,4 @@
-import { send_private_msg } from '../api/qqBot.js'
+import { send_private_msg, send_forward_msg } from '../api/qqBot.js'
 import config from '../config/index.js'
 import { formatMessage } from '../utils/index.js'
 import { findMessageById } from '../utils/logger.js'
@@ -17,18 +17,66 @@ export async function handleRetraction(data) {
     let messageContent = ''
     // 构造消息内容
     if (data.group_id) {
-      messageContent = `群${originalMessage.group_id}撤回消息：\n发送者：${originalMessage.sender.nickname}(${data.user_id})\n原始消息：${originalMessage ? JSON.stringify(originalMessage.message) : '未找到原始消息'}`
+      messageContent = `${originalMessage.group_id}群成员${originalMessage.sender.nickname}(${data.user_id})`
     } else {
-      messageContent = `好友 ${originalMessage.sender.nickname}(${originalMessage.user_id})撤回消息：\n原始消息：${originalMessage ? JSON.stringify(originalMessage.message) : '未找到原始消息'}`
+      messageContent = `好友 ${originalMessage?.sender?.nickname}(${originalMessage.user_id})`
     }
     // 发送给管理员
-    send_private_msg(formatMessage({
-      message_type: 'private',
-      target_id: process.env.ADMIN_QQ,
-      arrs: {
-        type: 'text',
-        data: { text: messageContent }
-      },
-    }))
+    // send_private_msg(formatMessage({
+    //   message_type: 'private',
+    //   target_id: process.env.ADMIN_QQ,
+    //   arrs: [{
+    //     type: 'text',
+    //     data: { text: messageContent + '撤回消息如下：\n' }
+    //   }, ...(originalMessage?.message ? originalMessage?.message.map(item => {
+    //     if (item.data?.file) item.data.file = item.data.url
+    //     return item
+    //   }) : [])]
+    // }))
+    send_forward_msg({
+      "user_id": process.env.ADMIN_QQ,
+      "messages": [
+        {
+          "type": "node",
+          "data": {
+            "user_id": '3435547347',
+            "nickname": "QQ用户",
+            "content": [{
+              "type": "text",
+              "data": { text: messageContent + '撤回消息如下：\n' }
+            }]
+          }
+        },
+        ...(originalMessage?.message ? originalMessage?.message.map(item => {
+          if (item.data?.file) {
+            item.data.file = item.data.url
+            delete item.data.url
+            delete item.data.file_size
+            delete item.data.summary
+            delete item.data.sub_type
+            if (item.type == 'record') {
+              item.type = 'text'
+              item.data.text = item.data.file
+            }
+          }
+          const datas = {
+            "type": "node",
+            "data": {
+              "user_id": '3435547347',
+              "nickname": "QQ用户",
+              "content": [item]
+            }
+          }
+          return datas
+        }) : [])],
+      "news": [
+        {
+          "text": "撤回消息"
+        }
+      ],
+      "prompt": "[聊天记录]",
+      "summary": "撤回消息",
+      "source": "撤回消息"
+    })
   }
 }
