@@ -18,7 +18,7 @@ const config = { // 白名单和配置
   "862794206": {},
   "1021173838": {
     "welcomeMessages": " 欢迎入群，嘻嘻",
-    "isAntiRetraction": true,
+    "isAntiRetraction": false,
     "isClockIn": true,
     "isEmoji": true,
     "chatType": '', // 空表示关闭，at表示at模式，name表示名字
