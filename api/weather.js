@@ -43,7 +43,15 @@ export async function getWeather(city) {
   try {
     const response = await axios.get(`https://api.cenguigui.cn/api/WeatherInfo/?city=${encodeURIComponent(city)}`);
     if (response.data.code === 200 && response.data.data) {
-      return response.data.data;
+      const weatherData = response.data.data;
+      
+      // 检查返回的城市名是否与查询的城市名匹配
+      // 如果API返回了默认的北京天气（当查询不存在的城市时），则不返回数据
+      if (weatherData.city !== city && weatherData.city === '北京') {
+        return null;
+      }
+      
+      return weatherData;
     }
     return null;
   } catch (error) {
