@@ -129,7 +129,7 @@ export async function generateWeatherImage(weatherData) {
 
   // 7天预报标题
   svgContent += `
-    ${createSVGText('未 来 7 天 预 报', 500, 400, 30, 'bold', '#1565C0', 'middle')}
+    ${createSVGText('7 天 预 报', 500, 400, 30, 'bold', '#1565C0', 'middle')}
     <line x1="200" y1="415" x2="800" y2="415" stroke="#1565C0" stroke-width="2"/>
   `;
 
