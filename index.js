@@ -13,7 +13,6 @@ let ws;
 
 // 创建一个函数来处理WebSocket连接
 function connectWebSocket() {
-  console.log('正在连接到WebSocket服务器...');
   const newWs = new WebSocket(wsUrl, {
     headers: {
       'Authorization': 'Bearer zosnco51857'
@@ -65,5 +64,3 @@ export default {
 
 // 初始化定时任务
 initializeScheduledTasks();
-
-console.log('WebSocket客户端已启动，正在连接到', wsUrl);
