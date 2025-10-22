@@ -48,6 +48,7 @@ export async function handleAdminCommands(data, msg) {
         const res = await tangdouzBiaoq({
           nr: msg1 || '没啥好说的'
         })
+        if (!res) return
         messageTypeChange({
           type: "image",
           data: { file: res, "sub_type": "1", "summary": "怎么开始爆照了？", }
