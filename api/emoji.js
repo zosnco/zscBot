@@ -2,6 +2,7 @@ import qs from 'qs';
 import { sendApiRequest } from '../utils/axiosEncapsulation.js';
 import { removeEmptyValues } from '../utils/index.js';
 let emoType = null
+let emojiBlacklist = ['射'] // 表情包黑名单，包含这些词的表情包不会发送
 // 获取表情包所有数据
 export async function allEmoChange() {
   const res = await sendApiRequest(
@@ -57,6 +58,7 @@ export async function generateEmoji(data, msg) {
   if (!obj || (!(Object.keys(emoData).length == obj.params.length))) return
   emoData.action = 'create_meme'
   emoData.type = obj.type
+  if (emojiBlacklist.indexOf(obj.name) != -1) return
   const url = `https://api.lolimi.cn/API/preview/api.php?${qs.stringify(emoData)}`
   return url
 }
