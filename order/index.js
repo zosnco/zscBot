@@ -69,7 +69,7 @@ async function textChange(data, msg) {
     if (res) {
       messageTypeChange({
         type: "image",
-        data: { "sub_type": "1", file: res }
+        data: { "sub_type": "0", file: res }
       }, data)
     }
   }
