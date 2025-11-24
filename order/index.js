@@ -15,18 +15,18 @@ import path from 'path'
 dotenv.config()
 async function textChange(data, msg) {
   const msg1 = msg[0]?.data?.text
-  if (msg1?.includes('天气')) {
-    const city = msg1.replace('天气', '').trim();
-    if (!city) return;
-    const weatherData = await getWeather(city);
-    if (weatherData) {
-      const weatherImage = await generateWeatherImage(weatherData);
-      messageTypeChange({
-        type: "image",
-        data: { file: `base64://${weatherImage.toString('base64')}` }
-      }, data)
-    }
-  }
+  // if (msg1?.includes('天气')) {
+  //   const city = msg1.replace('天气', '').trim();
+  //   if (!city) return;
+  //   const weatherData = await getWeather(city);
+  //   if (weatherData) {
+  //     const weatherImage = await generateWeatherImage(weatherData);
+  //     messageTypeChange({
+  //       type: "image",
+  //       data: { file: `base64://${weatherImage.toString('base64')}` }
+  //     }, data)
+  //   }
+  // }
   if (msg1?.includes('点歌')) {
     if (!parseSongRequest(msg1, '点歌')[0]) return
     const res = await dg_kugouSQ({
@@ -69,7 +69,7 @@ async function textChange(data, msg) {
     if (res) {
       messageTypeChange({
         type: "image",
-        data: { "sub_type": "0", file: res }
+        data: { "sub_type": "1", file: res }
       }, data)
     }
   }
