@@ -1,7 +1,7 @@
 import qs from 'qs'; // qs.stringify(data)
 import { sendApiRequest } from '../utils/axiosEncapsulation.js'
 export async function dg_kugouSQ(data) {
-  const res = await sendApiRequest(`http://sdkapi.hhlqilongzhu.cn/api/juhe_dgmusic?${qs.stringify({
+  const res = await sendApiRequest(`https://sdkapi.hhlqilongzhu.cn/api/QQmusic?${qs.stringify({
     key:'Dragon0CD2C18C2F067049D0D075F0A55ADCB9',
     msg: '',
     n: 1,
