@@ -32,7 +32,10 @@ export async function generateEmoji(data, msg) {
   // 查找text消息，并排除只包含空格的消息
   const textMessages = msg.filter(m => m.type === 'text' && m.data.text.trim() !== '' && m.data.text.trim() != text);
   if (!emoType) return
-  const obj = emoType.find(item => item.data.name == text)?.data
+  let obj = null
+  for (const key in emoType) {
+    if (emoType[key]?.data?.name == text) obj = emoType[key]?.data
+  }
   let emoData = {}
   if (obj) {
     let ids = 0
