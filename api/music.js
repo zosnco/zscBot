@@ -1,13 +1,7 @@
 import qs from 'qs'; // qs.stringify(data)
 import { sendApiRequest } from '../utils/axiosEncapsulation.js'
 export async function dg_kugouSQ(data) {
-  const res = await sendApiRequest(`https://sdkapi.hhlqilongzhu.cn/api/juhe_dgmusic?${qs.stringify({
-    key:'Dragon0CD2C18C2F067049D0D075F0A55ADCB9',
-    msg: '',
-    n: 1,
-    type: 'json',
-    ...data,
-    quality: '128',
-  })}`)
-  return res
+  const res1 = await sendApiRequest(`https://api.vkeys.cn/v2/music/tencent/search/song?word=${data.msg}`)
+  const res2 = await sendApiRequest(`https://api.vkeys.cn/v2/music/tencent/geturl?id=${res1.data[data.n-1].id}`)
+  return res2
 }
