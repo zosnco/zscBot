@@ -8,10 +8,19 @@ async function increaseChange(data) {
     send_group_msg(formatMessage({
       message_type: 'group',
       target_id: data.group_id,
-      arrs: {
+      arrs: [{
         type: "text",
         data: { text: config[data.group_id].welcomeMessages },
-      },
+      }, {
+        type: "face",
+        data: { id: "311" },
+      }, {
+        type: "face",
+        data: { id: "311" },
+      }, {
+        type: "face",
+        data: { id: "311" },
+      }],
       at_qq: data.user_id
     }))
 
