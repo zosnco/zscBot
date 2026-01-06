@@ -52,10 +52,10 @@ export function parseSongRequest(param1, param2) {
   }
 
   // 移除 param1 中的所有空格
-  const cleanedParam1 = param1.replace(/\s+/g, "");
+  // const cleanedParam1 = param1.replace(/\s+/g, "");
 
   // 从清理后的第一个参数中移除第二个参数的内容（如果存在）
-  const resultParam1 = cleanedParam1.replace(param2, "").trim();
+  const resultParam1 = param1.replace(param2, "").trim();
 
   // 使用更宽松的正则表达式来匹配歌名和数字部分
   // 允许任何Unicode字符（包括日文、特殊符号等）
