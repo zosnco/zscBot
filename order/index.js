@@ -1,8 +1,8 @@
 import { send_group_msg, send_private_msg } from '../api/qqBot.js'
 import { crawlData } from '../api/saicheData.js'
-import { dg_kugouSQ } from '../api/music.js'
+import { dg_kugouSQ, speechSynthesis } from '../api/music.js'
 import { getWeather, generateWeatherImage } from '../api/weather.js'
-import { parseSongRequest, formatMessage, generateTextImage } from '../utils/index.js'
+import { parseSongRequest, formatMessage, generateTextImage, parseVoiceSynthesisText } from '../utils/index.js'
 import { handleAdminCommands } from './admin.js'
 import { dsChatChange } from './chatChange.js'
 import { _sp_jx_Analysis } from './videoAnalysis.js'
@@ -61,7 +61,7 @@ async function textChange(data, msg) {
         type: "image",
         data: { file: `base64://${imageBuffer.toString('base64')}` }
       }, data)
-    } catch (error) {}
+    } catch (error) { }
   }
   // 处理表情包指令
   if (config[data.group_id]?.isEmoji) {
@@ -72,6 +72,19 @@ async function textChange(data, msg) {
         data: { "sub_type": "1", file: res }
       }, data)
     }
+  }
+  // 语音合成
+  if (msg1?.includes('语音合成')) {    
+    const msg_content = parseVoiceSynthesisText(msg1)
+    if (!msg_content || msg_content.length <= 0) return    
+    const res = await speechSynthesis({
+      msg: msg_content.length > 1 ? msg_content[1] : msg_content[0] || '',
+      sp: msg_content.length > 1 ? msg_content[0] : '蔡徐坤',
+    })
+    if (res.mp3 && res.mp3.includes('http')) messageTypeChange({
+      type: "record",
+      data: { file: res.mp3 }
+    }, data)
   }
 }
 // 处理数据类型

@@ -135,19 +135,19 @@ export async function generateTextImage(text) {
     const maxCharsPerLine = 40; // 增加每行最大字符数
     const lineHeight = 35; // 增加行高
     const lines = [];
-    
+
     // 按换行符分割文本
     const paragraphs = text.split('\n');
-    
+
     for (const paragraph of paragraphs) {
       if (paragraph.trim() === '') {
         lines.push(''); // 保留空行
         continue;
       }
-      
+
       let currentLine = '';
       const chars = paragraph.split('');
-      
+
       for (const char of chars) {
         if (currentLine.length >= maxCharsPerLine) {
           lines.push(currentLine);
@@ -156,7 +156,7 @@ export async function generateTextImage(text) {
           currentLine += char;
         }
       }
-      
+
       if (currentLine) {
         lines.push(currentLine);
       }
@@ -172,15 +172,15 @@ export async function generateTextImage(text) {
   <rect width="100%" height="100%" fill="#f8f9fa"/>
   <rect x="20" y="20" width="${totalWidth - 40}" height="${totalHeight - 40}" rx="10" fill="white" stroke="#e9ecef" stroke-width="2"/>
   ${lines.map((line, index) => {
-    const escapedLine = line
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-    
-    return `<text x="40" y="${60 + index * lineHeight}" font-family="Microsoft YaHei, 微软雅黑, sans-serif" font-size="20" fill="#333333">${escapedLine}</text>`;
-  }).join('')}
+      const escapedLine = line
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+      return `<text x="40" y="${60 + index * lineHeight}" font-family="Microsoft YaHei, 微软雅黑, sans-serif" font-size="20" fill="#333333">${escapedLine}</text>`;
+    }).join('')}
 </svg>`;
 
     // 使用sharp将SVG转换为图片
@@ -215,7 +215,7 @@ export function dayjs(date = new Date()) {
         formatStr
       );
     },
-    
+
     add(amount, unit) {
       const newDate = new Date(d);
       switch (unit) {
@@ -232,4 +232,29 @@ export function dayjs(date = new Date()) {
       return dayjs(newDate);
     }
   };
+}
+
+export function parseVoiceSynthesisText(input) {
+    // 使用正则表达式匹配"语音合成"作为分隔符
+    const separator = "语音合成";
+    
+    // 查找"语音合成"的位置
+    const index = input.indexOf(separator);
+    
+    // 如果没有找到"语音合成"，直接返回整个文本
+    if (index === -1) {
+        return [input.trim()];
+    }
+    
+    // 分割说话者和内容
+    let speaker = input.substring(0, index).trim();
+    let content = input.substring(index + separator.length).trim();
+    
+    // 如果说话者为空，只返回内容
+    if (speaker === "") {
+        return [content];
+    }
+    
+    // 否则返回说话者和内容
+    return [speaker, content];
 }
