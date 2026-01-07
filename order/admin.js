@@ -6,6 +6,7 @@ import config from '../config/index.js'
 import { gjlpChat } from '../api/chat.js'
 import { tangdouzBiaoq } from '../api/emojiImg.js'
 import { generateRandomString } from '../utils/index.js'
+import { speechSynthesis } from '../api/music.js'
 import dotenv from 'dotenv'
 dotenv.config()
 let sessionId = generateRandomString()
@@ -35,14 +36,18 @@ export async function handleAdminCommands(data, msg) {
     if (randomNum < probability) {
       // 生成0-100的随机数，如果小于设定的概率值则触发自动回复
       const randomNum2 = Math.floor(Math.random() * 100)
-      if (randomNum2 <= 0 && msg1) {
+      if (randomNum2 < 30 && msg1) {
         const res = await gjlpChat({
           sessionId: sessionId,
           message: msg1,
         })
-        messageTypeChange({
-          type: "text",
-          data: { text: res.response }
+        const res2 = await speechSynthesis({
+          msg: res.response,
+          sp: '爱莉希雅',
+        })
+        if (res2.mp3 && res2.mp3.includes('http')) messageTypeChange({
+          type: "record",
+          data: { file: res2.mp3 }
         }, data)
       } else {
         const res = await tangdouzBiaoq({
