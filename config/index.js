@@ -11,6 +11,14 @@ const config = { // 白名单和配置
     "isEmoji": true, // 是否开启表情包
     // "sensitiveWords": sitiveWord // 敏感词
   },
+  "811896349": {
+    "welcomeMessages": "", // 群欢迎语
+    "chatType": '', // 空表示关闭，at表示at模式，name表示名字
+    "isVideoAnalysis": true, // 是否开启视频解析
+    "autoReplyProbability": 0, // 自动回复消息的概率，最高100%
+    "isEmoji": true, // 是否开启表情包
+    // "sensitiveWords": sitiveWord // 敏感词
+  },
   "985309959": {
     "isVideoAnalysis": true, // 是否开启视频解析
     "isEmoji": true,
