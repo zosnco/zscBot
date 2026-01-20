@@ -7,7 +7,7 @@ const config = { // 白名单和配置
     "chatType": '', // 空表示关闭，at表示at模式，name表示名字
     "isVideoAnalysis": true, // 是否开启视频解析
     "autoReplyProbability": 0, // 自动回复消息的概率，最高100%
-    "isCardName": "LY.云端()", // 是否开启群名片修改
+    "isCardName": "", // 是否开启群名片修改
     "isEmoji": true, // 是否开启表情包
     // "sensitiveWords": sitiveWord // 敏感词
   },
