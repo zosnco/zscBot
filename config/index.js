@@ -1,6 +1,6 @@
 // import sitiveWord from './sensitiveWords.js'
 const config = { // 白名单和配置
-  "838881064": {
+  "618667158": {
     "welcomeMessages": " 欢迎加入凌云 群名片改成游戏名字 记得留意下群公告内容谢谢", // 群欢迎语
     "isAntiRetraction": true, // 是否开启防撤回
     "isClockIn": true, // 是否开启签到
