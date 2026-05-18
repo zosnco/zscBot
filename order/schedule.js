@@ -59,10 +59,10 @@ function set_group_cardChange() {
 }
 // 初始化定时任务
 export function initializeScheduledTasks() {
-  // 每天00:03执行群打卡
+  // 每天00:00执行群打卡
   createScheduleJob(
     'dailyGroupSignIn',
-    '0 3 0 * * *',
+    '0 0 0 * * *',
     dailyGroupSignIn
   );
   // 修改群昵称
