@@ -1,6 +1,7 @@
 import { send_group_msg, send_private_msg } from '../api/qqBot.js'
 import { crawlData } from '../api/saicheData.js'
 import { dg_kugouSQ, speechSynthesis } from '../api/music.js'
+import { searchmerchant } from '../api/lkwg.js'
 import { getWeather, generateWeatherImage } from '../api/weather.js'
 import { parseSongRequest, formatMessage, generateTextImage, parseVoiceSynthesisText } from '../utils/index.js'
 import { handleAdminCommands } from './admin.js'
@@ -27,6 +28,14 @@ async function textChange(data, msg) {
   //     }, data)
   //   }
   // }
+  if (msg1?.includes('查看远行商人')) {
+    const res = await searchmerchant()
+    if (res.data.url) messageTypeChange({
+      type: "text",
+      data: { text: `` }
+    }, data)
+  }
+
   if (msg1?.includes('点歌')) {
     if (!parseSongRequest(msg1, '点歌')[0]) return
     const res = await dg_kugouSQ({
@@ -74,9 +83,9 @@ async function textChange(data, msg) {
     }
   }
   // 语音合成
-  if (msg1?.includes('语音合成')) {    
+  if (msg1?.includes('语音合成')) {
     const msg_content = parseVoiceSynthesisText(msg1)
-    if (!msg_content || msg_content.length <= 0) return    
+    if (!msg_content || msg_content.length <= 0) return
     const res = await speechSynthesis({
       msg: msg_content.length > 1 ? msg_content[1] : msg_content[0] || '',
       sp: msg_content.length > 1 ? msg_content[0] : '蔡徐坤',
