@@ -30,10 +30,51 @@ async function textChange(data, msg) {
   // }
   if (msg1?.includes('查看远行商人')) {
     const res = await searchmerchant()
-    if (res.data.url) messageTypeChange({
-      type: "text",
-      data: { text: `` }
-    }, data)
+    if (res.code === 200 && res.data) {
+      const { current_round, total_rounds, product_count, products, ended_rounds } = res.data
+
+      // 时间戳转剩余时间
+      const formatRemaining = (timestamp) => {
+        const now = Math.floor(Date.now() / 1000)
+        let diff = timestamp - now
+        if (diff <= 0) return '已截止'
+        const days = Math.floor(diff / 86400)
+        diff -= days * 86400
+        const hours = Math.floor(diff / 3600)
+        diff -= hours * 3600
+        const minutes = Math.floor(diff / 60)
+        const seconds = diff % 60
+        let result = ''
+        if (days > 0) result += `${days}天`
+        if (hours > 0) result += `${hours}时`
+        if (minutes > 0) result += `${minutes}分`
+        result += `${seconds}秒`
+        return result
+      }
+
+      let text = `=== 远行商人 ===\n`
+      text += `第${current_round}/${total_rounds}轮 · ${product_count}件\n`
+
+      if (products && products.length > 0) {
+        products.forEach((p, i) => {
+          const remaining = formatRemaining(p.end_time)
+          const time = p.time.replace(/\s*-\s*/g, '-')
+          text += `\n${i + 1}. ${p.name}\n`
+          text += `   ${time}  剩${remaining}`
+        })
+      }
+
+      const validEnded = ended_rounds?.filter(r => r.products?.length > 0)
+      if (validEnded && validEnded.length > 0) {
+        text += `\n\n已结束：`
+        text += validEnded.map(r => r.round).join('，')
+      }
+
+      messageTypeChange({
+        type: "text",
+        data: { text }
+      }, data)
+    }
   }
 
   if (msg1?.includes('点歌')) {
@@ -73,15 +114,15 @@ async function textChange(data, msg) {
     } catch (error) { }
   }
   // 处理表情包指令
-  if (config[data.group_id]?.isEmoji) {
-    const res = await generateEmoji(data, msg)
-    if (res) {
-      messageTypeChange({
-        type: "image",
-        data: { "sub_type": "1", file: res }
-      }, data)
-    }
-  }
+  // if (config[data.group_id]?.isEmoji) {
+  //   const res = await generateEmoji(data, msg)
+  //   if (res) {
+  //     messageTypeChange({
+  //       type: "image",
+  //       data: { "sub_type": "1", file: res }
+  //     }, data)
+  //   }
+  // }
   // 语音合成
   if (msg1?.includes('语音合成')) {
     const msg_content = parseVoiceSynthesisText(msg1)
