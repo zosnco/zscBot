@@ -36,8 +36,8 @@ const config = { // 白名单和配置
     // "sensitiveWords": sitiveWord // 敏感词
   },
 }
-// export default config;
+export default config;
 // 测试环境
-export default {
-  "1021173838": config['1021173838']
-};
+// export default {
+//   "1021173838": config['1021173838']
+// };
