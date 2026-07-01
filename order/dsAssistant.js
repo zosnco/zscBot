@@ -80,6 +80,12 @@ function reply(text, data) {
   messageTypeChange({ type: 'text', data: { text } }, data)
 }
 
+// 切换人设 / 清空上下文 的权限：私聊任意用户均可，群聊仅管理员
+function canManageSession(data) {
+  if (data.message_type === 'private') return true
+  return data.user_id == Number(process.env.ADMIN_QQ)
+}
+
 // 人设列表文案（触发词动态注入，保证菜单里显示的就是当前实际名字）
 async function presetListText(trigger) {
   const presets = await loadPresets()
@@ -118,9 +124,9 @@ export async function dsAssistantChange(data, msg) {
   // 去掉触发词及随后的空白、标点
   const content = head.slice(trigger.length).replace(/^[\s,，:：、]+/, '').trim()
 
-  // 1) 切换人设：<触发词>切换<人设>（仅管理员可用，其他人静默忽略）
+  // 1) 切换人设：<触发词>切换<人设>（私聊任意用户，群聊仅管理员，其他人静默忽略）
   if (content.startsWith('切换')) {
-    if (data.user_id != Number(process.env.ADMIN_QQ)) return
+    if (!canManageSession(data)) return
     const word = content.slice(2).trim()
     const preset = await matchPreset(word)
     if (!preset) {
@@ -132,9 +138,9 @@ export async function dsAssistantChange(data, msg) {
     return
   }
 
-  // 2) 清空上下文（仅管理员可用，其他人静默忽略）
+  // 2) 清空上下文（私聊任意用户，群聊仅管理员，其他人静默忽略）
   if (['清空', '重置', '清空上下文', '清除', '重来'].includes(content)) {
-    if (data.user_id != Number(process.env.ADMIN_QQ)) return
+    if (!canManageSession(data)) return
     const cur = sessions.get(key)
     await rebuildSession(key, cur?.preset || 'default')
     reply('上下文已清空，开始新的对话吧～', data)
