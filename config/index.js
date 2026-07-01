@@ -25,7 +25,6 @@ const config = { // 白名单和配置
   "985309959": {
     "isVideoAnalysis": true, // 是否开启视频解析
     "isEmoji": true,
-    "dsAssistantName": ASSISTANT_NAME, // AI 对话触发词；可换成 ASSISTANT_NAME 或自定义名字
   },
   "1021173838": {
     "welcomeMessages": " 欢迎入群，嘻嘻",
