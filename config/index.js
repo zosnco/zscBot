@@ -7,7 +7,7 @@
 //     · 用自定义名字： "dsAssistantName": "小爱"
 //     · 不写或写 ""：  该群不启用 AI
 // 改全局名字只需改下面这一行，引用 ASSISTANT_NAME 的群 + 私聊 + 菜单文案自动跟着变
-export const ASSISTANT_NAME = '小迪'
+export const ASSISTANT_NAME = '蛋挞'
 
 const config = { // 白名单和配置
   "820888183": {
