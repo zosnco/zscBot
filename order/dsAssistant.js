@@ -99,10 +99,7 @@ async function helpText(trigger) {
     '可用指令：',
     `· ${trigger}切换<人设> —— 切换 AI 人设（角色）`,
     `· ${trigger}清空      —— 清空当前对话记忆`,
-    `· ${trigger}帮助      —— 查看本说明`,
-    '',
-    '可选人设：',
-    await presetListText(trigger)
+    `· ${trigger}帮助      —— 查看本说明`
   ].join('\n')
 }
 
