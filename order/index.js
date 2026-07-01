@@ -6,6 +6,7 @@ import { getWeather, generateWeatherImage } from '../api/weather.js'
 import { parseSongRequest, formatMessage, generateTextImage, parseVoiceSynthesisText } from '../utils/index.js'
 import { handleAdminCommands } from './admin.js'
 import { dsChatChange } from './chatChange.js'
+import { dsAssistantChange } from './dsAssistant.js'
 import { _sp_jx_Analysis } from './videoAnalysis.js'
 import { allEmoChange, generateEmoji } from '../api/emoji.js'
 import config from '../config/index.js'
@@ -157,5 +158,6 @@ export async function initializeChange(data, msg) {
   handleAdminCommands(data, msg)
   textChange(data, msg)
   dsChatChange(data, msg)
+  dsAssistantChange(data, msg)
   _sp_jx_Analysis(data, msg)
 }
