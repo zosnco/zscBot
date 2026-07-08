@@ -24,6 +24,6 @@ export async function sendApiRequest(url, method = 'GET', data = null, headers =
     return response.data;
   } catch (error) {
     console.error('API请求失败:', error.message);
-    return { error: error.message };
+    return { error: error.message, status: error?.response?.status };
   }
 }

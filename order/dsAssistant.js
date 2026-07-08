@@ -154,25 +154,34 @@ export async function dsAssistantChange(data, msg) {
   }
 
   // 4) 普通对话
+  // 注意：底层 sendApiRequest 会把 HTTP 错误吞成 { error } 返回（不抛异常），
+  // 所以这里要把 { error } 当作异常重新抛出，外层「重建会话再重试」的逻辑才会生效。
+  const ask = async (sessionId) => {
+    const res = await sendDsMessage(sessionId, content)
+    if (res?.error) throw res
+    return res
+  }
+
   try {
     const session = await ensureSession(key, 'default')
-    const res = await sendDsMessage(session.sessionId, content)
-    if (res?.reply) {
-      reply(res.reply, data)
-    } else {
-      reply('AI 暂时没有回复，稍后再试～', data)
-    }
+    const res = await ask(session.sessionId)
+    reply(res?.reply || 'AI 暂时没有回复，稍后再试～', data)
   } catch (e) {
-    // 会话失效（服务重启 / sessionId 过期）→ 重建后重试一次
-    const status = e?.response?.status
-    if (status === 404) {
+    // 会话失效（服务重启 / sessionId 过期 / 网络中断）→ 重建后重试一次
+    const status = e?.status ?? e?.response?.status
+    // 4xx（sessionId 过期 / 鉴权失败 / 请求非法）或无 status（网络中断、服务重启后连不上）→ 视为会话丢失
+    // 5xx 视为服务端临时故障，不重建会话，避免白白丢失上下文
+    const sessionLost = !status || [400, 401, 403, 404].includes(status)
+    if (sessionLost) {
       try {
         const cur = sessions.get(key)
         const session = await rebuildSession(key, cur?.preset || 'default')
-        const res = await sendDsMessage(session.sessionId, content)
-        if (res?.reply) {
-          reply(res.reply, data)
-          return
+        if (session?.sessionId) {
+          const res = await ask(session.sessionId)
+          if (res?.reply) {
+            reply(res.reply, data)
+            return
+          }
         }
       } catch (_) { /* 走到下面的提示 */ }
     }
