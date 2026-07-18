@@ -1,8 +1,9 @@
 import qs from 'qs'; // qs.stringify(data)
 import { sendApiRequest } from '../utils/axiosEncapsulation.js'
 export async function dg_kugouSQ(data) {
-  const res = await sendApiRequest(`https://api.vkeys.cn/v2/music/tencent?word=${data.msg}&choose=${data.n}&quality=8`)
-  return res
+  const res1 = await sendApiRequest(`http://music.xn--q35am7h.site/?api=search_with_source&key=${data.msg}&pn=1&source=酷狗音乐`)
+  const res2 = await sendApiRequest(`http://music.xn--q35am7h.site/?api=get_song_with_source&id=${res1.data.songs[data.n].rid}&source=酷狗音乐`)
+  return res2
 }
 
 export async function speechSynthesis(data) {

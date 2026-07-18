@@ -82,11 +82,11 @@ async function textChange(data, msg) {
     if (!parseSongRequest(msg1, '点歌')[0]) return
     const res = await dg_kugouSQ({
       msg: parseSongRequest(msg1, '点歌')[0] || '',
-      n: parseSongRequest(msg1, '点歌')[1] || 1,
+      n: parseSongRequest(msg1, '点歌')[1] || 0,
     })
-    if (res.data.url) messageTypeChange({
+    if (res.data && res.data.length > 0) messageTypeChange({
       type: "record",
-      data: { file: res.data.url }
+      data: { file: res.data[res.data.length - 1].url }
     }, data)
   }
   if (msg1?.includes('图鉴')) {
